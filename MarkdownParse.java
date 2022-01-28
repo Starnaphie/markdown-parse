@@ -2,9 +2,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.net.*;
 
 public class MarkdownParse {
-    public static ArrayList<String> getLinks(String markdown) {
+    public static ArrayList<String> getLinks(String markdown) throws IOException {
         ArrayList<String> toReturn = new ArrayList<>();
         // find the next [, then find the ], then find the (, then take up to
         // the next )
@@ -14,7 +15,22 @@ public class MarkdownParse {
             int nextCloseBracket = markdown.indexOf("]", nextOpenBracket);
             int openParen = markdown.indexOf("(", nextCloseBracket);
             int closeParen = markdown.indexOf(")", openParen);
-            toReturn.add(markdown.substring(openParen + 1, closeParen));
+            String link = markdown.substring(openParen + 1, closeParen);
+
+            URL url;
+            try {
+                url = new URL(link);    
+            } catch (IOException e) {
+                currentIndex = closeParen + 1;
+                continue;
+            }
+            
+            HttpURLConnection huc = (HttpURLConnection)url.openConnection();
+            int responseCode = huc.getResponseCode();
+ 
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                toReturn.add(link);
+            } 
             currentIndex = closeParen + 1;
         }
         return toReturn;
