@@ -6,6 +6,8 @@ import java.net.*;
 
 public class MarkdownParse {
     public static ArrayList<String> getLinks(String markdown) throws IOException {
+        System.out.println("hello!");
+
         ArrayList<String> toReturn = new ArrayList<>();
         // find the next [, then find the ], then find the (, then take up to
         // the next )
