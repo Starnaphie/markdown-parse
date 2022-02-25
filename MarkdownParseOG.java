@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 public class MarkdownParseOG {
     public static ArrayList<String> getLinks(String markdown) {
+        System.out.println("hi");
+
         ArrayList<String> toReturn = new ArrayList<>();
         // find the next [, then find the ], then find the (, then take up to
         // the next )
